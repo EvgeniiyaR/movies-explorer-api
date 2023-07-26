@@ -2,18 +2,10 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
-const rateLimit = require('express-rate-limit');
-
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: 100,
-  standardHeaders: true,
-  legacyHeaders: false,
-});
-
 const mongoose = require('mongoose');
-
 const cookieParser = require('cookie-parser');
+
+const limiter = require('./utils/limiter');
 
 const routes = require('./routes');
 
@@ -40,4 +32,4 @@ app.use(express.json());
 
 app.use(routes);
 
-app.listen(PORT);
+app.listen(NODE_ENV === 'production' ? PORT : 3000);
