@@ -37,7 +37,7 @@ const createMovie = (req, res, next) => {
     movieId,
     owner: req.user,
   })
-    .then((card) => res.status(201).send(card))
+    .then((movie) => res.status(201).send(movie))
     .catch((err) => next(err));
 };
 
