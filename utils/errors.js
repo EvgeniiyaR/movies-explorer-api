@@ -4,6 +4,7 @@ const SERVER_ERROR = 500;
 const UNAUTHORIZED = 401;
 const CONFLICT = 409;
 const FORBIDDEN = 403;
+const NOT_UNIQE = 11000;
 
 module.exports = {
   BAD_REQUEST,
@@ -12,4 +13,5 @@ module.exports = {
   UNAUTHORIZED,
   CONFLICT,
   FORBIDDEN,
+  NOT_UNIQE,
 };

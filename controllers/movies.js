@@ -1,11 +1,12 @@
 const Movie = require('../models/movie');
 const NotFoundError = require('../errors/not-found-error');
 const ForbiddenError = require('../errors/forbidden-error');
+const { OK, CREATED } = require('../utils/answers');
 
 const getMovies = (req, res, next) => {
   const idCurrentUser = req.user._id;
   Movie.find({ owner: idCurrentUser })
-    .then((movies) => res.status(200).send(movies))
+    .then((movies) => res.status(OK).send(movies))
     .catch((err) => next(err));
 };
 
@@ -37,7 +38,7 @@ const createMovie = (req, res, next) => {
     movieId,
     owner: req.user,
   })
-    .then((movie) => res.status(201).send(movie))
+    .then((movie) => res.status(CREATED).send(movie))
     .catch((err) => next(err));
 };
 
@@ -53,7 +54,7 @@ const deleteMovie = (req, res, next) => {
         return next(new ForbiddenError('The current user does not have the rights to delete this movie'));
       }
       return movie.deleteOne()
-        .then(() => res.status(200).send({ message: `Movie ${id} successfully delete` }))
+        .then(() => res.status(OK).send({ message: `Movie ${id} successfully delete` }))
         .catch((err) => next(err));
     })
     .catch((err) => next(err));

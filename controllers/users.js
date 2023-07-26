@@ -5,6 +5,8 @@ const User = require('../models/user');
 const NotFoundError = require('../errors/not-found-error');
 const UnauthorizedError = require('../errors/unauthorized-error');
 const ConflictError = require('../errors/conflict-error');
+const { OK, CREATED } = require('../utils/answers');
+const { NOT_UNIQE } = require('../utils/errors');
 
 const getCurrentUser = (req, res, next) => {
   const id = req.user._id;
@@ -13,7 +15,7 @@ const getCurrentUser = (req, res, next) => {
       if (!user) {
         return next(new NotFoundError('Not Found'));
       }
-      return res.status(200).send({ name: user.name, email: user.email });
+      return res.status(OK).send({ name: user.name, email: user.email });
     })
     .catch((err) => next(err));
 };
@@ -31,7 +33,7 @@ const createUser = (req, res, next) => {
       email,
       password: hash,
     }))
-    .then((newUser) => res.status(201).send(
+    .then((newUser) => res.status(CREATED).send(
       {
         name: newUser.name,
         email: newUser.email,
@@ -39,7 +41,7 @@ const createUser = (req, res, next) => {
       },
     ))
     .catch((err) => {
-      if (err.code === 11000) {
+      if (err.code === NOT_UNIQE) {
         return next(new ConflictError('The user already exists'));
       }
       return next(err);
@@ -60,10 +62,10 @@ const updateUser = (req, res, next) => {
       if (!user) {
         return next(new NotFoundError('Not Found'));
       }
-      return res.status(200).send({ name: user.name, email: user.email });
+      return res.status(OK).send({ name: user.name, email: user.email });
     })
     .catch((err) => {
-      if (err.code === 11000) {
+      if (err.code === NOT_UNIQE) {
         return next(new ConflictError('The email already exists'));
       }
       return next(err);
@@ -92,7 +94,7 @@ const login = (req, res, next) => {
             sameSite: true,
           });
 
-          return res.status(200).send({ message: `User ${user.email} successfully logged in` });
+          return res.status(OK).send({ message: `User ${user.email} successfully logged in` });
         })
         .catch((err) => next(err));
     })
@@ -100,7 +102,7 @@ const login = (req, res, next) => {
 };
 
 const deleteCookies = (req, res) => {
-  res.status(200).clearCookie('jwt').send({ message: 'Cookies removed' });
+  res.status(OK).clearCookie('jwt').send({ message: 'Cookies removed' });
 };
 
 module.exports = {

@@ -9,7 +9,9 @@ const limiter = require('./utils/limiter');
 
 const routes = require('./routes');
 
-const { NODE_ENV, PORT, DB_URL } = process.env;
+const { PORT_DEV, DB_URL_DEV } = require('./utils/constants');
+
+const { NODE_ENV, PORT_PROD, DB_URL_PROD } = process.env;
 
 const app = express();
 
@@ -24,7 +26,7 @@ app.use(cookieParser());
 
 app.use(limiter);
 
-mongoose.connect(NODE_ENV === 'production' ? DB_URL : 'mongodb://127.0.0.1:27017/bitfilmsdb', {
+mongoose.connect(NODE_ENV === 'production' ? DB_URL_PROD : DB_URL_DEV, {
   useNewUrlParser: true,
 });
 
@@ -32,4 +34,4 @@ app.use(express.json());
 
 app.use(routes);
 
-app.listen(NODE_ENV === 'production' ? PORT : 3000);
+app.listen(NODE_ENV === 'production' ? PORT_PROD : PORT_DEV);
