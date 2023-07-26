@@ -62,7 +62,12 @@ const updateUser = (req, res, next) => {
       }
       return res.status(200).send({ name: user.name, email: user.email });
     })
-    .catch((err) => next(err));
+    .catch((err) => {
+      if (err.code === 11000) {
+        return next(new ConflictError('The email already exists'));
+      }
+      return next(err);
+    });
 };
 
 const login = (req, res, next) => {

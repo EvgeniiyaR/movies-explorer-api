@@ -3,6 +3,7 @@
   "author": "Evgeniia Romanchenko",
   "version": "0.1.0",
   "scripts": {
+    "lint": "npx eslint .",
     "start": "node app.js",
     "dev": "nodemon app.js"
   },
