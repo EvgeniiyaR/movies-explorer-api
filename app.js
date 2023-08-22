@@ -18,7 +18,7 @@ const app = express();
 app.use(helmet());
 
 app.use(cors({
-  origin: 'movies.evgeniiyar.nomoreparties.sbs',
+  origin: ['http://localhost:3000', 'https://movies.evgeniiyar.nomoreparties.sbs'],
   credentials: true,
 }));
 
