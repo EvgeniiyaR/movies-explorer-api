@@ -37,11 +37,11 @@ router.use('/users', userRoutes);
 
 router.use('/movies', movieRoutes);
 
+router.use('/signout', deleteCookies);
+
 router.use((req, res, next) => next(new NotFoundError('Not Found')));
 
 router.use(errorLogger);
-
-router.use('/signout', deleteCookies);
 
 router.use(errors());
 
